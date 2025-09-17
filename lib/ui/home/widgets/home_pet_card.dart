@@ -7,11 +7,11 @@ class PetCard extends StatelessWidget {
   final VoidCallback onDelete;
 
   const PetCard({
-    Key? key,
+    super.key,
     required this.pet,
     required this.onEdit,
     required this.onDelete,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

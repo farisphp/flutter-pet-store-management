@@ -6,10 +6,10 @@ class PetDialog extends StatefulWidget {
   final Function(Pet) onSave;
 
   const PetDialog({
-    Key? key,
+    super.key,
     this.pet,
     required this.onSave,
-  }) : super(key: key);
+  });
 
   @override
   _PetDialogState createState() => _PetDialogState();
@@ -88,11 +88,10 @@ class _PetDialogState extends State<PetDialog> {
 
                       // Status Dropdown
                       DropdownButtonFormField<PetStatus>(
-                        value: _selectedStatus,
+                        initialValue: _selectedStatus,
                         decoration: const InputDecoration(
                           labelText: 'Status',
                           border: OutlineInputBorder(),
-                          prefixIcon: Icon(Icons.circle),
                         ),
                         items: PetStatus.values.map((PetStatus status) {
                           return DropdownMenuItem<PetStatus>(
