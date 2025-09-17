@@ -18,17 +18,28 @@ class PetModel {
   });
 
   factory PetModel.fromJson(Map<String, dynamic> json) {
+    // Filter out null values before converting to a List<String>.
+    final List<String> filteredPhotoUrls =
+        (json['photoUrls'] as List<dynamic>?)?.whereType<String>().toList() ??
+            [];
+    final List<TagModel> filteredTags = (json['tags'] as List<dynamic>?)
+            ?.where((item) =>
+                item is Map<String, dynamic> &&
+                item.containsKey('id') &&
+                item.containsKey('name')) // Ensure both 'id' and 'name' exist
+            .map((x) => TagModel.fromJson(x as Map<String, dynamic>))
+            .toList() ??
+        [];
+
     return PetModel(
       id: json['id'],
       name: json['name'] ?? '',
       status: json['status'] ?? 'available',
-      photoUrls: List<String>.from(json['photoUrls'] ?? []),
+      photoUrls: filteredPhotoUrls,
       category: json['category'] != null
-          ? CategoryModel.fromJson(json['category'])
+          ? CategoryModel.fromJson(json['category'] as Map<String, dynamic>)
           : null,
-      tags: json['tags'] != null
-          ? List<TagModel>.from(json['tags'].map((x) => TagModel.fromJson(x)))
-          : [],
+      tags: filteredTags,
     );
   }
 
@@ -73,8 +84,19 @@ class CategoryModel {
 
   CategoryModel({required this.id, required this.name});
 
-  factory CategoryModel.fromJson(Map<String, dynamic> json) {
-    return CategoryModel(id: json['id'], name: json['name']);
+  factory CategoryModel.fromJson(Map<String, dynamic>? json) {
+    // Validate the 'id' field. Use 0 if it's missing or not an integer.
+    final int id = (json != null && json.containsKey('id') && json['id'] is int)
+        ? json['id'] as int
+        : 0;
+
+    // Validate the 'name' field. Use an empty string if it's missing or not a string.
+    final String name =
+        (json != null && json.containsKey('name') && json['name'] is String)
+            ? json['name'] as String
+            : '';
+
+    return CategoryModel(id: id, name: name);
   }
 
   Map<String, dynamic> toJson() {

@@ -11,9 +11,6 @@ class DeletePet implements UseCase<void, int> {
 
   @override
   Future<Either<Failure, void>> call(int id) {
-    if (id <= 0) {
-      return Future.value(Left(ValidationFailure('Invalid pet ID')));
-    }
     return repository.deletePet(id);
   }
 }
