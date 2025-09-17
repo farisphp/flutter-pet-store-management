@@ -204,6 +204,8 @@ class _PetDialogState extends State<PetDialog> {
                           runSpacing: 4,
                           children: _photoUrls
                               .map((url) => Chip(
+                                    avatar: CircleAvatar(
+                                        backgroundImage: NetworkImage(url)),
                                     label: Text(
                                       url.length > 30
                                           ? '${url.substring(0, 30)}...'

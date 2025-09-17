@@ -98,8 +98,7 @@ class PetCard extends StatelessWidget {
             ],
             if (pet.photoUrls.isNotEmpty) ...[
               const SizedBox(height: 4),
-              _buildInfoRow(
-                  context, 'Photos', '${pet.photoUrls.length} image(s)'),
+              _buildImagesRow(context, 'Photos', pet.photoUrls),
             ],
             if (pet.tags.isNotEmpty) ...[
               const SizedBox(height: 8),
@@ -142,6 +141,51 @@ class PetCard extends StatelessWidget {
           child: Text(
             value,
             style: Theme.of(context).textTheme.bodyMedium,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildImagesRow(
+      BuildContext context, String label, List<String> photoURLs) {
+    return Row(
+      children: [
+        SizedBox(
+          width: 80,
+          child: Text(
+            '$label:',
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  color: Colors.grey.shade600,
+                  fontWeight: FontWeight.w500,
+                ),
+          ),
+        ),
+        Expanded(
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: photoURLs
+                .map((url) => Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: Colors.grey.shade300),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(8),
+                        child: Image.network(
+                          url,
+                          fit: BoxFit.cover,
+                          errorBuilder: (context, error, stackTrace) => Icon(
+                            Icons.broken_image,
+                            color: Colors.grey.shade400,
+                          ),
+                        ),
+                      ),
+                    ))
+                .toList(),
           ),
         ),
       ],
