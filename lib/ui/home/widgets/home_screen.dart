@@ -62,6 +62,7 @@ class _PetStoreHomePageState extends State<PetStoreHomePage> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: DropdownButton<PetStatus>(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               value: _selectedStatus,
               style: TextStyle(color: Theme.of(context).colorScheme.onSurface),
               underline: Container(),
